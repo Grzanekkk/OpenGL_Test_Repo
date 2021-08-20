@@ -2,6 +2,13 @@
 
 #include <GL/glew.h>
 
-static void GLClearError();
-static void GLCheckError();
+#define ASSERT(x) if (!(x)) __debugbreak();
+#define GLCall(x) GLClearError();\
+    x;\
+    ASSERT(GLLogCall(#x, __FILE__, __LINE__))   // Debuging macro
+
+
+void GLClearError();
+bool GLLogCall(const char* function, const char* file, int line);
+
 

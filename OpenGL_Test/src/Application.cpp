@@ -6,15 +6,16 @@
 #include <sstream>
 #include <string>
 
+#include "Renderer.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 
 static void GLClearBuffers()
 {
-    glBindVertexArray(0);
-    glUseProgram(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    GLCall(glBindVertexArray(0));
+    GLCall(glUseProgram(0));
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
+    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 }
 
 struct ShaderProgramSource
@@ -57,8 +58,8 @@ static unsigned int CompileShader(unsigned int type, const std::string& source)
 {
     unsigned int id = glCreateShader(type);
     const char* src = source.c_str();
-    glShaderSource(id, 1, &src, nullptr);
-    glCompileShader(id);
+    GLCall(glShaderSource(id, 1, &src, nullptr));
+    GLCall(glCompileShader(id));
 
     //TODO: Error handling
 
@@ -72,13 +73,13 @@ static unsigned int CreateShader(const std::string& vertexShader, const std::str
     unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
     unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-    glLinkProgram(program);
-    glValidateProgram(program);
-    
-    glDeleteShader(vs);
-    glDeleteShader(fs);
+    GLCall(glAttachShader(program, vs));
+    GLCall(glAttachShader(program, fs));
+    GLCall(glLinkProgram(program));
+    GLCall(glValidateProgram(program));
+
+    GLCall(glDeleteShader(vs));
+    GLCall(glDeleteShader(fs));
 
     return program;
 }
@@ -124,23 +125,23 @@ int main(void)
     };
 
     unsigned int vao; // Vertex Array Object
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    GLCall(glGenVertexArrays(1, &vao));
+    GLCall(glBindVertexArray(vao));
 
     VertexBuffer vb(positions, 4 * 2 * sizeof(float));
 
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);  // Links vertex buffer with vao
+    GLCall(glEnableVertexAttribArray(0));
+    GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0));  // Links vertex buffer with vao
 
     IndexBuffer ib(indices, 6);
 
     ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
 
     unsigned int shader = CreateShader(source.VertexSourde, source.FragmentSourde);
-    glUseProgram(shader);
+    GLCall(glUseProgram(shader));
 
     int uniformLocation = glGetUniformLocation(shader, "u_Color");
-    glUniform4f(uniformLocation, 0.8f, 0.5f, 0.8f, 1.0f);
+    GLCall(glUniform4f(uniformLocation, 0.8f, 0.5f, 0.8f, 1.0f));
 
     
     GLClearBuffers();
@@ -154,13 +155,13 @@ int main(void)
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(shader);
-        glUniform4f(uniformLocation, r, 0.5f, 0.8f, 1.0f);
+        GLCall(glUseProgram(shader));
+        GLCall(glUniform4f(uniformLocation, r, 0.5f, 0.8f, 1.0f));
 
-        glBindVertexArray(vao);
+        GLCall(glBindVertexArray(vao));
         ib.Bind();
 
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 
 
         if (r >= 1.0f)
@@ -178,7 +179,7 @@ int main(void)
         glfwPollEvents();
     }
 
-    glDeleteProgram(shader);
+    GLCall(glDeleteProgram(shader));
 
     glfwTerminate();
     return 0;
