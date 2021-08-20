@@ -6,18 +6,8 @@
 #include <sstream>
 #include <string>
 
-static void GLClearError()
-{
-    while (glGetError() != GL_NO_ERROR);
-}
-
-static void GLCheckError()
-{
-    while (GLenum error = glGetError())
-    {
-        std::cout << "[OpenGL ERROR] (" << error << ")" << std::endl;
-    }
-}
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
 
 static void GLClearBuffers()
 {
@@ -137,19 +127,12 @@ int main(void)
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
-    unsigned int bufferId;
-    glGenBuffers(1, &bufferId);
-    glBindBuffer(GL_ARRAY_BUFFER, bufferId);
-    glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), &positions, GL_STATIC_DRAW);
+    VertexBuffer vb(positions, 4 * 2 * sizeof(float));
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);  // Links vertex buffer with vao
 
-    unsigned int ibo;   // indexBufferObject
-    glGenBuffers(1, &ibo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), &indices, GL_STATIC_DRAW);
-
+    IndexBuffer ib(indices, 6);
 
     ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
 
@@ -173,10 +156,12 @@ int main(void)
 
         glUseProgram(shader);
         glUniform4f(uniformLocation, r, 0.5f, 0.8f, 1.0f);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         glBindVertexArray(vao);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+        ib.Bind();
+
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
 
         if (r >= 1.0f)
             increment = -0.01f;
