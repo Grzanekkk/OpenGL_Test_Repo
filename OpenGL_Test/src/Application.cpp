@@ -7,6 +7,7 @@
 #include <string>
 
 #include "Renderer.h"
+#include "VertexBufferLayout.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
@@ -69,20 +70,17 @@ int main(void)
 
     IndexBuffer ib(indices, 6);
 
-
-
     Shader shader("res/shaders/Basic.shader");
+    shader.Bind();
 
-    ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
-
-    unsigned int shader = CreateShader(source.VertexSourde, source.FragmentSourde);
-    GLCall(glUseProgram(shader));
-
-    int uniformLocation = glGetUniformLocation(shader, "u_Color");
-    GLCall(glUniform4f(uniformLocation, 0.8f, 0.5f, 0.8f, 1.0f));
-
+    shader.SetUniform4f("u_Color", 0.8f, 0.5f, 0.8f, 1.0f);
     
-    GLClearBuffers();
+    va.Unbind();
+    vb.Unbind();
+    ib.Unbind();
+    shader.Unbind();
+    
+    Renderer renderer;
 
     float r = 0.0f;
     float increment = 0.01f;
@@ -90,17 +88,12 @@ int main(void)
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
-        /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
+        renderer.Clear();
 
-        GLCall(glUseProgram(shader));
-        GLCall(glUniform4f(uniformLocation, r, 0.5f, 0.8f, 1.0f));
-
-        va.Bind();
-        ib.Bind();
-
-        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
-
+        shader.Bind();
+        shader.SetUniform4f("u_Color", r, 0.5f, 0.8f, 1.0f);
+        
+        renderer.Draw(va, ib, shader);
 
         if (r >= 1.0f)
             increment = -0.01f;
@@ -109,7 +102,6 @@ int main(void)
 
         r += increment;
 
-
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
@@ -117,7 +109,7 @@ int main(void)
         glfwPollEvents();
     }
 
-    GLCall(glDeleteProgram(shader));
+    //GLCall(glDeleteProgram(shader));
 
     glfwTerminate();
     return 0;

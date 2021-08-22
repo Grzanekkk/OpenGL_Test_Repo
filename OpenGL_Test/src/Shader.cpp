@@ -3,7 +3,7 @@
 
 #include <fstream>
 #include <sstream>
-
+#include <iostream>
 
 
 Shader::Shader(const std::string& filepath)
@@ -17,15 +17,6 @@ Shader::~Shader()
 {
 	GLCall(glDeleteProgram(m_RendererID));
 }
-
-void Shader::CompileShader()
-{
-	ParseShaderSourceCode(m_FilePath);
-
-	CreateShader();
-
-}
-
 
 ShaderProgramSource Shader::ParseShaderSourceCode(const std::string& filepath)
 {
@@ -81,22 +72,37 @@ unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
 	GLCall(glShaderSource(id, 1, &src, nullptr));
 	GLCall(glCompileShader(id));
 
-	//TODO: Error handling
-
 	return id;
 }
 
+
 void Shader::Bind() const
 {
-
+	GLCall(glUseProgram(m_RendererID));
 }
 
 void Shader::Unbind() const
 {
-
+	GLCall(glUseProgram(0));
 }
 
-void Shader::SetUniform4f(const std::string& name, float f0, float f1, float f2, float f3)
+void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
 {
+	GLCall(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
+}
 
+int Shader::GetUniformLocation(const std::string& name)
+{
+	if (m_UniformLocationCache.find(name) == m_UniformLocationCache.end())
+	{
+		return m_UniformLocationCache[name];
+	}
+
+	GLCall(int uniformLocation = glGetUniformLocation(m_RendererID, name.c_str()));
+	if (uniformLocation == -1)
+		std::cout << "[Warning]: uniform" << name << "dowsn`t exist." << std::endl;
+	else
+		m_UniformLocationCache[name] = uniformLocation;
+
+	return uniformLocation;
 }
