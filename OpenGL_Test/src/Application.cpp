@@ -14,6 +14,9 @@
 #include "Shader.h"
 #include "Texture.h"
 
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
 static void GLClearBuffers()
 {
     GLCall(glBindVertexArray(0));
@@ -49,7 +52,6 @@ int main(void)
 
     std::cout << glGetString(GL_VERSION) << std::endl;
 
-
     float positions[] = {
         -0.5f, -0.5f, 0.0f, 0.0f, // 0
          0.5f, -0.5f, 1.0f, 0.0f, // 1
@@ -75,10 +77,12 @@ int main(void)
 
     IndexBuffer ib(indices, 6);
 
+    glm::mat4 projection = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+
     Shader shader("res/shaders/Basic.shader");
     shader.Bind();
-
-    // shader.SetUniform4f("u_Color", 0.8f, 0.5f, 0.8f, 1.0f);
+    shader.SetUniform4f("u_Color", 0.8f, 0.5f, 0.8f, 1.0f);
+    shader.SetUniformMat4f("u_MVP", projection);        // MVP == Model View Projection
 
     Texture texture("res/textures/papaj.png");
     texture.Bind();
@@ -101,7 +105,7 @@ int main(void)
         renderer.Clear();
 
         shader.Bind();
-        // shader.SetUniform4f("u_Color", r, 0.5f, 0.8f, 1.0f);
+        //shader.SetUniform4f("u_Color", r, 0.5f, 0.8f, 1.0f);
         
         renderer.Draw(va, ib, shader);
 

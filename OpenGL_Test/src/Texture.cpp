@@ -1,5 +1,5 @@
 #include "Texture.h"
-#include "vendor/stb_image/stb_image.h"
+#include "stb_image/stb_image.h"
 
 Texture::Texture(std::string filePath)
 	:m_RendererID(0), m_FilePath(filePath), m_LocalBufer(0), m_Height(0), m_Width(0), m_BPP(0)
@@ -25,7 +25,7 @@ Texture::Texture(std::string filePath)
 
 Texture::~Texture()
 {
-
+	GLCall(glDeleteTextures(1, &m_RendererID));
 }
 
 void Texture::Bind(unsigned int slot) const
