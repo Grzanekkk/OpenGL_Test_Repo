@@ -17,14 +17,6 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
-static void GLClearBuffers()
-{
-    GLCall(glBindVertexArray(0));
-    GLCall(glUseProgram(0));
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
-    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
-}
-
 
 int main(void)
 {
@@ -35,7 +27,7 @@ int main(void)
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "OpenGL Test Window", NULL, NULL);
+    window = glfwCreateWindow(960, 540, "OpenGL Test Window", NULL, NULL);
     if (!window)    
     {
         glfwTerminate();
@@ -53,10 +45,10 @@ int main(void)
     std::cout << glGetString(GL_VERSION) << std::endl;
 
     float positions[] = {
-        -0.5f, -0.5f, 0.0f, 0.0f, // 0
-         0.5f, -0.5f, 1.0f, 0.0f, // 1
-         0.5f,  0.5f, 1.0f, 1.0f, // 2
-        -0.5f,  0.5f, 0.0f, 1.0f  // 3
+         100.0f, 100.0f, 0.0f, 0.0f, // 0
+         200.0f, 100.0f, 1.0f, 0.0f, // 1
+         200.0f, 200.0f, 1.0f, 1.0f, // 2
+         100.0f, 200.0f, 0.0f, 1.0f  // 3
     };
 
     unsigned int indices[] = {
@@ -71,24 +63,27 @@ int main(void)
     VertexBuffer vb(positions, 4 * 4 * sizeof(float));
 
     VertexBufferLayout layout;
-    layout.Push<float>(2);  // vertecies coord
-    layout.Push<float>(2);  // texture coord
+    layout.Push<float>(2);  // vertices coords
+    layout.Push<float>(2);  // texture coords
     va.AddBuffer(vb, layout);
 
     IndexBuffer ib(indices, 6);
 
-    glm::mat4 projection = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+    glm::mat4 projection = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);   // Converts 3D world coordinates to screen space coordinates between -1 and 1
+    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200, 150, 0));
+
+    glm::mat4 mvp = projection * view * model;
 
     Shader shader("res/shaders/Basic.shader");
     shader.Bind();
     shader.SetUniform4f("u_Color", 0.8f, 0.5f, 0.8f, 1.0f);
-    shader.SetUniformMat4f("u_MVP", projection);        // MVP == Model View Projection
+    shader.SetUniformMat4f("u_MVP", mvp);        // MVP == Model View Projection Matrix
 
     Texture texture("res/textures/papaj.png");
     texture.Bind();
     shader.SetUniform1i("u_Texture", 0);
     
-
     va.Unbind();
     vb.Unbind();
     ib.Unbind();
