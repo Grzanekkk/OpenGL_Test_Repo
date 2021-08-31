@@ -20,7 +20,6 @@ Texture::Texture(std::string filePath)
 
 	if (m_LocalBufer)
 		stbi_image_free(m_LocalBufer);
-
 }
 
 Texture::~Texture()

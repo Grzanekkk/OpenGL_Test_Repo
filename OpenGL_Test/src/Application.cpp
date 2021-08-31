@@ -22,6 +22,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 #include "tests/TestClearColor.h"
+#include "tests/TestTexture.h"
 
 
 int main(void)
@@ -60,25 +61,43 @@ int main(void)
     ImGui_ImplOpenGL3_Init();
     ImGui::StyleColorsDark();
 
-    test::TestClearColor test;
+    test::Test* currentTest = nullptr;
+    test::TestMenu* menu = new test::TestMenu(currentTest);
+    currentTest = menu;
+
+    test::TestClearColor testColor;
+    test::TestTexture testTexture;
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         renderer.Clear();
 
-        test.OnUpdate(0.0f);
-        test.OnRender();
+        //testColor.OnUpdate(0.0f);
+        //testColor.OnRender();
+
+        testTexture.OnUpdate(0.0f);
+        testTexture.OnRender();
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-        test.OnImGuiRender();
+        if (currentTest != nullptr)
+        {
+            currentTest->OnUpdate(0.0f);
+            currentTest->OnRender();
+            ImGui::Begin("Test Window");
+            currentTest->OnImGuiRender();
+
+            ImGui::End();
+        }
+
+        //testColor.OnImGuiRender();
+        testTexture.OnImGuiRender();
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
 
 
         glfwSwapBuffers(window);
