@@ -22,7 +22,7 @@ namespace test
 
 	void TestTexture::OnRender()
 	{
-		renderer.Draw(va, ib, shader);
+		// renderer.Draw(va, ib, shader);
 	}
 
 	void TestTexture::OnImGuiRender()
@@ -44,24 +44,24 @@ namespace test
 			2, 3, 0
 		};
 
-		va;
-		VertexBuffer vb(positions, 4 * 4 * sizeof(float));
+		//va;
+		//VertexBuffer vb(positions, 4 * 4 * sizeof(float));
 
-		VertexBufferLayout layout;
-		layout.Push<float>(2);  
-		layout.Push<float>(2);  
-		va.AddBuffer(vb, layout);
+		//VertexBufferLayout layout;
+		//layout.Push<float>(2);  
+		//layout.Push<float>(2);  
+		//va.AddBuffer(vb, layout);
 
-		ib = IndexBuffer(indices, 6);
+		//ib = IndexBuffer(indices, 6);
 
-		glm::mat4 projection = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);   // Converts 3D world coordinates to screen space coordinates between -1 and 1
-		glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
+		//glm::mat4 projection = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);   // Converts 3D world coordinates to screen space coordinates between -1 and 1
+		//glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
 
-		shader = Shader("res/shaders/Basic.shader");
-		shader.Bind();
-		shader.SetUniform4f("u_Color", 0.8f, 0.5f, 0.8f, 1.0f);
+		//shader = Shader("res/shaders/Basic.shader");
+		//shader.Bind();
+		//shader.SetUniform4f("u_Color", 0.8f, 0.5f, 0.8f, 1.0f);
 
-		texture.Bind();
-		shader.SetUniform1i("u_Texture", 0);
+		//texture.Bind();
+		//shader.SetUniform1i("u_Texture", 0);
 	}
 }

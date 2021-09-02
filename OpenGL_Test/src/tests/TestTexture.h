@@ -20,10 +20,10 @@ namespace test
 		void SetUpRendering();
 
 	private:
-		Texture texture = Texture("res/textures/papaj.png");
+		/*Texture texture = Texture("res/textures/papaj.png");
 		VertexArray va;
 		Renderer renderer;
 		IndexBuffer ib;
-		Shader shader;
+		Shader shader;*/
 	};
 }
