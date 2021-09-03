@@ -20,10 +20,11 @@ namespace test
 		void SetUpRendering();
 
 	private:
-		/*Texture texture = Texture("res/textures/papaj.png");
-		VertexArray va;
-		Renderer renderer;
-		IndexBuffer ib;
-		Shader shader;*/
+		Texture texture = Texture("res/textures/papaj.png");
+		VertexArray m_VertexArray;
+		IndexBuffer m_IndexBuffer;
+		Shader m_Shader;
+
+		glm::vec3 m_TranslationA, m_TranslationB;
 	};
 }
