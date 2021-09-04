@@ -66,6 +66,7 @@ int main(void)
     currentTest = testMenu;
 
     testMenu->RegisterTest<test::TestClearColor>("Clear Color Test");
+    testMenu->RegisterTest<test::TestTexture>("Texture Test");
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -96,7 +97,6 @@ int main(void)
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
 
         glfwSwapBuffers(window);
         glfwPollEvents();
