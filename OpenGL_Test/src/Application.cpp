@@ -23,6 +23,7 @@
 
 #include "examples/ExampleClearColor.h"
 #include "examples/ExampleTexture2D.h"
+#include "examples/Example3DCube.h"
 
 
 int main(void)
@@ -67,6 +68,7 @@ int main(void)
 
     exampleMenu->RegisterTest<example::ExampleClearColor>("Clear Color Test");
     exampleMenu->RegisterTest<example::ExampleTexture2D>("Texture Test");
+    exampleMenu->RegisterTest<example::Example3DCube>("3D Cube");
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
