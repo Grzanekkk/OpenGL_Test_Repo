@@ -1,10 +1,10 @@
-#include "Test.h"
+#include "Example.h"
 #include "imgui/imgui.h"
 
-namespace test
+namespace example
 {
 
-	TestMenu::TestMenu(Test*& currentTestPointer)
+	TestMenu::TestMenu(Example*& currentTestPointer)
 		:m_CurrentTest(currentTestPointer)
 	{
 

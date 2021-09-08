@@ -5,23 +5,23 @@
 #include <string>
 #include <iostream>
 
-namespace test
+namespace example
 {
-	class Test
+	class Example
 	{
 	public:
-		Test() {}
-		virtual ~Test() {}
+		Example() {}
+		virtual ~Example() {}
 
 		virtual void OnUpdate(float deltaTime) {}
 		virtual void OnRender() {}
 		virtual void OnImGuiRender() {}
 	};
 
-	class TestMenu : public Test
+	class TestMenu : public Example
 	{
 	public:
-		TestMenu(Test*& currentTestPointer);
+		TestMenu(Example*& currentTestPointer);
 		virtual void OnImGuiRender();
 
 		template<typename T>
@@ -33,7 +33,7 @@ namespace test
 		}
 
 	private:
-		Test*& m_CurrentTest;
-		std::vector<std::pair<std::string, std::function<Test*()>>> m_Test;
+		Example*& m_CurrentTest;
+		std::vector<std::pair<std::string, std::function<Example*()>>> m_Test;
 	};
 }

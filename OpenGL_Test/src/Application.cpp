@@ -21,8 +21,8 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-#include "tests/TestClearColor.h"
-#include "tests/TestTexture.h"
+#include "examples/ExampleClearColor.h"
+#include "examples/ExampleTexture2D.h"
 
 
 int main(void)
@@ -61,12 +61,12 @@ int main(void)
     ImGui_ImplOpenGL3_Init();
     ImGui::StyleColorsDark();
 
-    test::Test* currentTest = nullptr;
-    test::TestMenu* testMenu = new test::TestMenu(currentTest);
-    currentTest = testMenu;
+    example::Example* currentExample = nullptr;
+    example::TestMenu* exampleMenu = new example::TestMenu(currentExample);
+    currentExample = exampleMenu;
 
-    testMenu->RegisterTest<test::TestClearColor>("Clear Color Test");
-    testMenu->RegisterTest<test::TestTexture>("Texture Test");
+    exampleMenu->RegisterTest<example::ExampleClearColor>("Clear Color Test");
+    exampleMenu->RegisterTest<example::ExampleTexture2D>("Texture Test");
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -78,19 +78,19 @@ int main(void)
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-        if (currentTest != nullptr)
+        if (currentExample != nullptr)
         {
-            currentTest->OnUpdate(0.0f);
-            currentTest->OnRender();
+            currentExample->OnUpdate(0.0f);
+            currentExample->OnRender();
             ImGui::Begin("Test Window");
 
-            if (currentTest != testMenu && ImGui::Button("<--"))
+            if (currentExample != exampleMenu && ImGui::Button("<--"))
             {
-                delete currentTest;
-                currentTest = testMenu;
+                delete currentExample;
+                currentExample = exampleMenu;
             }
 
-            currentTest->OnImGuiRender();
+            currentExample->OnImGuiRender();
 
             ImGui::End();
         }
@@ -102,9 +102,9 @@ int main(void)
         glfwPollEvents();
     }
     
-    if (currentTest != testMenu)
-        delete testMenu;
-    delete currentTest;
+    if (currentExample != exampleMenu)
+        delete exampleMenu;
+    delete currentExample;
 
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();

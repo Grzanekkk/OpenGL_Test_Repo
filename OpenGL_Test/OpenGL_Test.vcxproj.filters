@@ -63,13 +63,16 @@
     <ClCompile Include="src\vendor\imgui\imgui_impl_opengl3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\tests\TestClearColor.cpp">
+    <ClCompile Include="src\examples\ExampleClearColor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\tests\TestTexture.cpp">
+    <ClCompile Include="src\examples\ExampleTexture2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\tests\Test.cpp">
+    <ClCompile Include="src\examples\Example.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\examples\Example3DCube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1403,13 +1406,16 @@
     <ClInclude Include="src\vendor\imgui\imgui_impl_opengl3_loader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\tests\Test.h">
+    <ClInclude Include="src\examples\Example.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\tests\TestClearColor.h">
+    <ClInclude Include="src\examples\ExampleClearColor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\tests\TestTexture.h">
+    <ClInclude Include="src\examples\ExampleTexture2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\examples\Example3DCube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

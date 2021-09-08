@@ -1,19 +1,19 @@
 #pragma once
 
-#include "Test.h"
+#include "Example.h"
 #include "Texture.h"
 #include "VertexBufferLayout.h"
 #include "Renderer.h"
 
 #include <memory>
 
-namespace test
+namespace example
 {
-	class TestTexture : public Test
+	class ExampleTexture2D : public Example
 	{
 	public:
-		TestTexture();
-		~TestTexture();
+		ExampleTexture2D();
+		~ExampleTexture2D();
 
 		void OnUpdate(float deltaTime) override;
 		void OnRender() override;

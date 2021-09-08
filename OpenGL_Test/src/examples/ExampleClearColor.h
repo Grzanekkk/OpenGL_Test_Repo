@@ -1,14 +1,14 @@
 #pragma once
 
-#include "Test.h"
+#include "Example.h"
 
-namespace test
+namespace example
 {
-	class TestClearColor : public Test 
+	class ExampleClearColor : public Example 
 	{
 	public: 
-		TestClearColor();
-		~TestClearColor();
+		ExampleClearColor();
+		~ExampleClearColor();
 
 		void OnUpdate(float deltaTime) override;
 		void OnRender() override;

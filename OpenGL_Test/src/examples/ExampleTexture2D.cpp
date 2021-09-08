@@ -1,29 +1,29 @@
-#include "TestTexture.h"
+#include "ExampleTexture2D.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
 #include "imgui/imgui.h"
 
-namespace test
+namespace example
 {
-	TestTexture::TestTexture()
+	ExampleTexture2D::ExampleTexture2D()
 		: m_TranslationA(200, 200, 0), m_TranslationB(400, 300, 0)
 	{
 		SetUpRendering();
 	}
 
-	TestTexture::~TestTexture()
+	ExampleTexture2D::~ExampleTexture2D()
 	{
 		// Smart pointers will handle memory 
 	}
 
-	void TestTexture::OnUpdate(float deltaTime)
+	void ExampleTexture2D::OnUpdate(float deltaTime)
 	{
 
 	}
 
-	void TestTexture::OnRender()
+	void ExampleTexture2D::OnRender()
 	{
 		Renderer renderer;
 		
@@ -52,7 +52,7 @@ namespace test
 		}
 	}
 
-	void TestTexture::OnImGuiRender()
+	void ExampleTexture2D::OnImGuiRender()
 	{
 		ImGui::SliderFloat3("Translation A", &m_TranslationA.x, 0.0f, 960.0f);
 		ImGui::SliderFloat3("Translation B", &m_TranslationB.x, 0.0f, 960.0f);
@@ -60,7 +60,7 @@ namespace test
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	}
 
-	void TestTexture::SetUpRendering()
+	void ExampleTexture2D::SetUpRendering()
 	{
 		float positions[] = {
 			-50.0f, -50.0f, 0.0f, 0.0f, // 0
