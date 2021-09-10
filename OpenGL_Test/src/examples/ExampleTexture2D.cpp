@@ -8,7 +8,7 @@
 namespace example
 {
 	ExampleTexture2D::ExampleTexture2D()
-		: m_TranslationA(200, 200, 0), m_TranslationB(400, 300, 0)
+		: m_TranslationA(0, 0, 24), m_TranslationB(400, 300, 10), m_CameraTranslation(0, 0, -20), m_CameraRotation(0, 0, 0)
 	{
 		SetUpRendering();
 	}
@@ -30,8 +30,15 @@ namespace example
 		GLCall(glClearColor(0.1f, 0.3f, 0.8f, 1.0f));
 		GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
-		glm::mat4 projection = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);   // Converts 3D world coordinates to screen space coordinates between -1 and 1
-		glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
+		//glm::mat4 projection = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -200.0f, 200.0f);   // Converts 3D world coordinates to screen space coordinates between -1 and 1
+		//glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
+
+		glm::mat4 projection = glm::perspective(90.0f, 16.0f / 9.0f, 0.1f, 300.0f);
+		glm::mat4 view = glm::lookAt(
+			m_CameraTranslation, // Camera is at (4,3,3), in World Space
+			m_CameraRotation, // and looks at the origin.
+			glm::vec3(0, 1, 0)
+		);
 
 		m_Texture->Bind();
 
@@ -56,7 +63,9 @@ namespace example
 	{
 		ImGui::SliderFloat3("Translation A", &m_TranslationA.x, 0.0f, 960.0f);
 		ImGui::SliderFloat3("Translation B", &m_TranslationB.x, 0.0f, 960.0f);
-		ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+		ImGui::SliderFloat3("Camera Location", &m_CameraTranslation.x, -180.0f, 180.0f);
+		ImGui::SliderFloat3("Camera Point To Look To", &m_CameraRotation.x, -180.0f, 180.0f);
+		ImGui::Text("This is some useful text.");
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	}
 
@@ -85,7 +94,7 @@ namespace example
 		m_VertexArray = std::make_unique<VertexArray>();
 		m_VertexArray->AddBuffer(*m_VertexBuffer, layout);
 
-		m_IndexBuffer = std::make_unique<IndexBuffer>(indices, 6);
+		m_IndexBuffer = std::make_unique<IndexBuffer>(indices, 2 * 3);
 		m_Texture = std::make_unique<Texture>("res/textures/papaj.png");
 		
 		m_Shader = std::make_unique<Shader>("res/shaders/Basic.shader");

@@ -28,6 +28,6 @@ namespace example
 		std::unique_ptr<IndexBuffer> m_IndexBuffer;
 		std::unique_ptr<Shader> m_Shader;
 
-		glm::vec3 m_TranslationA, m_TranslationB;
+		glm::vec3 m_TranslationA, m_TranslationB, m_CameraTranslation, m_CameraRotation;
 	};
 }

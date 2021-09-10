@@ -6,9 +6,11 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+#include "imgui/imgui.h"
+
 
 example::Example3DCube::Example3DCube()
-	: m_ClearColor{0.44f, 1.0f, 0.94f, 1.0f}
+	: m_ClearColor{0.44f, 1.0f, 0.94f, 1.0f}, m_CameraTranslation(0, 0, -20), m_CameraRotation(0, 0, 0)
 {
 	float vertices[] = {
 		-1.0f, -1.0f,  1.0f,
@@ -42,6 +44,9 @@ example::Example3DCube::Example3DCube()
 		6, 7, 3
 	};
 
+	GLCall(glEnable(GL_BLEND));
+	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
 	m_VertexBuffer = std::make_unique<VertexBuffer>(vertices, 3 * 8 * sizeof(float));
 
 	VertexBufferLayout layout;
@@ -55,10 +60,9 @@ example::Example3DCube::Example3DCube()
 	m_Shader = std::make_unique<Shader>("res/shaders/Basic.shader");
 	m_Shader->Bind();
 	m_Shader->SetUniform4f("u_Color", 0.2f, 0.5f, 0.5f, 1.0f);
-	m_Shader->SetUniform4f("u_Color", 0.2f, 0.5f, 0.5f, 1.0f);
 
 	m_Texture = std::make_unique<Texture>("res/textures/papaj.png");
-	m_Shader->SetUniform1i("u_Texture", 0);
+	//m_Shader->SetUniform1i("u_Texture", 0);
 }
 
 example::Example3DCube::~Example3DCube()
@@ -81,12 +85,12 @@ void example::Example3DCube::OnRender()
 
 	glm::mat4 model = glm::mat4(1.0f);
 	//model = glm::rotate(model, 30.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	glm::mat4 projection = glm::perspective(90.0f, 16.0f / 9.0f, 0.1f, 300.0f);
 	glm::mat4 view = glm::lookAt(
-		glm::vec3(4, 3, 3), // Camera is at (4,3,3), in World Space
-		glm::vec3(0, 0, 0), // and looks at the origin.
+		m_CameraTranslation, // Camera is at (4,3,3), in World Space
+		m_CameraRotation, // and looks at the origin.
 		glm::vec3(0, 1, 0)
 	);
-	glm::mat4 projection = glm::perspective(45.0f, 16.0f / 9.0f, 0.1f, 100.0f);
 
 	glm::mat4 MVP = projection * view * model;
 	m_Shader->Bind();
@@ -99,5 +103,7 @@ void example::Example3DCube::OnRender()
 
 void example::Example3DCube::OnImGuiRender()
 {
-
+	ImGui::SliderFloat3("Camera Location", &m_CameraTranslation.x, -200.0f, 200.0f);
+	ImGui::SliderFloat3("Camera Point To Look To", &m_CameraRotation.x, -180.0f, 180.0f);
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 }
