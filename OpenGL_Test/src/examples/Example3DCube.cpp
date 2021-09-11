@@ -48,6 +48,28 @@ namespace example
 			6, 7, 3
 		};
 
+		float uvBuffer[] = {
+			0.0f,  0.66f,
+			0.25f, 0.66f,
+			0.0f,  0.33f,
+			0.25f, 0.33f,
+
+			0.5f,  0.66f,
+			0.5f,  0.33f,
+			0.75f, 0.66f,
+			0.75f, 0.33f,
+
+			1.0f,  0.66f,
+			1.0f,  0.33f,
+
+			0.25f, 1.0f,
+			0.5f,  1.0f,
+
+			0.25f, 0.0f,
+			0.5f,  0.0f,
+		};
+		
+
 		GLCall(glEnable(GL_BLEND));
 		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
@@ -66,7 +88,7 @@ namespace example
 		m_Shader->Bind();
 		//m_Shader->SetUniform4f("u_Color", 0.2f, 0.5f, 0.5f, 1.0f);
 
-		m_Texture = std::make_unique<Texture>("res/textures/obama.png");
+		m_Texture = std::make_unique<Texture>("res/textures/spongebob.png");
 		m_Shader->SetUniform1i("u_Texture", 0);
 	}
 
@@ -84,8 +106,6 @@ namespace example
 	{
 		Renderer renderer;
 
-		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-
 		GLCall(glClearColor(m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]));
 		GLCall(glEnable(GL_DEPTH_TEST));
 		GLCall(glDepthFunc(GL_LESS));
@@ -100,11 +120,11 @@ namespace example
 		//);
 
 		const float radius = 10.0f;
-		float camX = sin(glfwGetTime()) * radius;
+		float camX = sin(glfwGetTime()) * -radius;
 		float camZ = cos(glfwGetTime()) * radius;
 
 		glm::mat4 view = glm::lookAt(
-			glm::vec3(camX, 0.0f, camZ),
+			glm::vec3(camX, 3.0f, camZ),
 			glm::vec3(0.0f, 0.0f, 0.0f),
 			glm::vec3(0.0f, 1.0f, 0.0f)
 		);
@@ -115,6 +135,8 @@ namespace example
 		glm::mat4 MVP = projection * view * model;
 		m_Shader->Bind();
 		m_Shader->SetUniformMat4f("u_MVP", MVP);
+
+		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
 		renderer.Draw(*m_VertexArray, *m_IndexBuffer, *m_Shader);
 
