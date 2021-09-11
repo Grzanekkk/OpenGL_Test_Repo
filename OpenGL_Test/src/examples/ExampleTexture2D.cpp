@@ -95,7 +95,7 @@ namespace example
 		m_VertexArray->AddBuffer(*m_VertexBuffer, layout);
 
 		m_IndexBuffer = std::make_unique<IndexBuffer>(indices, 2 * 3);
-		m_Texture = std::make_unique<Texture>("res/textures/papaj.png");
+		m_Texture = std::make_unique<Texture>("res/textures/tommybg.png");
 		
 		m_Shader = std::make_unique<Shader>("res/shaders/Basic.shader");
 		m_Shader->Bind();
