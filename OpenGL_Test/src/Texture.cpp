@@ -34,6 +34,13 @@ void Texture::Bind(unsigned int slot) const
 	GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererID));
 }
 
+void Texture::BindTextureUV(const void* textureUV, unsigned int size) 
+{
+	GLCall(glGenBuffers(1, &m_RendererID));
+	GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID));
+	GLCall(glBufferData(GL_ARRAY_BUFFER, size, textureUV, GL_STATIC_DRAW));
+}
+
 void Texture::Unbind() const
 {
 	GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererID));

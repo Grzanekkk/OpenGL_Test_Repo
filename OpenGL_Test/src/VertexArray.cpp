@@ -26,7 +26,6 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 		GLCall(glVertexAttribPointer(index, element.count, element.type, element.normailzed, layout.GetStride(), (const void*)offset));  // Links vertex buffer with vao
 		offset += element.count * VertexBufferElement::GetSizeOfType(element.type);
 	}
-
 }
 
 void VertexArray::Bind() const

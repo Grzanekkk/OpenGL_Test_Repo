@@ -13,6 +13,7 @@ public:
 	Texture(std::string filePath);
 	~Texture();
 
+	void BindTextureUV(const void* textureUV, unsigned int size);
 	void Bind(unsigned int slot = 0) const;
 	void Unbind() const;
 };

@@ -48,25 +48,43 @@ namespace example
 			6, 7, 3
 		};
 
-		float uvBuffer[] = {
-			0.0f,  0.66f,
-			0.25f, 0.66f,
-			0.0f,  0.33f,
-			0.25f, 0.33f,
-
-			0.5f,  0.66f,
-			0.5f,  0.33f,
-			0.75f, 0.66f,
-			0.75f, 0.33f,
-
-			1.0f,  0.66f,
-			1.0f,  0.33f,
-
-			0.25f, 1.0f,
-			0.5f,  1.0f,
-
-			0.25f, 0.0f,
-			0.5f,  0.0f,
+		float textureUV[] = {
+		0.000059f, 1.0f - 0.000004f,
+	0.000103f, 1.0f - 0.336048f,
+	0.335973f, 1.0f - 0.335903f,
+	1.000023f, 1.0f - 0.000013f,
+	0.667979f, 1.0f - 0.335851f,
+	0.999958f, 1.0f - 0.336064f,
+	0.667979f, 1.0f - 0.335851f,
+	0.336024f, 1.0f - 0.671877f,
+	0.667969f, 1.0f - 0.671889f,
+	1.000023f, 1.0f - 0.000013f,
+	0.668104f, 1.0f - 0.000013f,
+	0.667979f, 1.0f - 0.335851f,
+	0.000059f, 1.0f - 0.000004f,
+	0.335973f, 1.0f - 0.335903f,
+	0.336098f, 1.0f - 0.000071f,
+	0.667979f, 1.0f - 0.335851f,
+	0.335973f, 1.0f - 0.335903f,
+	0.336024f, 1.0f - 0.671877f,
+	1.000004f, 1.0f - 0.671847f,
+	0.999958f, 1.0f - 0.336064f,
+	0.667979f, 1.0f - 0.335851f,
+	0.668104f, 1.0f - 0.000013f,
+	0.335973f, 1.0f - 0.335903f,
+	0.667979f, 1.0f - 0.335851f,
+	0.335973f, 1.0f - 0.335903f,
+	0.668104f, 1.0f - 0.000013f,
+	0.336098f, 1.0f - 0.000071f,
+	0.000103f, 1.0f - 0.336048f,
+	0.000004f, 1.0f - 0.671870f,
+	0.336024f, 1.0f - 0.671877f,
+	0.000103f, 1.0f - 0.336048f,
+	0.336024f, 1.0f - 0.671877f,
+	0.335973f, 1.0f - 0.335903f,
+	0.667969f, 1.0f - 0.671889f,
+	1.000004f, 1.0f - 0.671847f,
+	0.667979f, 1.0f - 0.335851f
 		};
 		
 
@@ -79,6 +97,9 @@ namespace example
 		layout.Push<float>(3);
 		layout.Push<float>(2);
 
+		m_Texture = std::make_unique<Texture>("res/textures/spongebob.png");
+		m_Texture->BindTextureUV(textureUV, 34 * sizeof(float));
+
 		m_VertexArray = std::make_unique<VertexArray>();
 		m_VertexArray->AddBuffer(*m_VertexBuffer, layout);
 
@@ -88,7 +109,6 @@ namespace example
 		m_Shader->Bind();
 		//m_Shader->SetUniform4f("u_Color", 0.2f, 0.5f, 0.5f, 1.0f);
 
-		m_Texture = std::make_unique<Texture>("res/textures/spongebob.png");
 		m_Shader->SetUniform1i("u_Texture", 0);
 	}
 
