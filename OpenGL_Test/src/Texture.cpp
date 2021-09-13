@@ -36,6 +36,8 @@ void Texture::Bind(unsigned int slot) const
 
 void Texture::BindTextureUV(const void* textureUV, unsigned int size) 
 {
+	//glTexCoordPointer(2, GL_FLOAT, 0, textureUV);
+
 	GLCall(glGenBuffers(1, &m_RendererID));
 	GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID));
 	GLCall(glBufferData(GL_ARRAY_BUFFER, size, textureUV, GL_STATIC_DRAW));

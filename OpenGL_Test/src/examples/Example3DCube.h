@@ -32,6 +32,7 @@ namespace example
 		glm::vec3 m_CameraTranslation, m_CameraRotation;
 
 		float m_ClearColor[4];
+		
 	};
 
 }

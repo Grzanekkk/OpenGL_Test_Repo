@@ -17,93 +17,53 @@ namespace example
 		: m_ClearColor{ 0.44f, 1.0f, 0.94f, 1.0f }, m_CameraTranslation(0, 0, -5), m_CameraRotation(0, 0, 0)
 	{
 		float vertices[] = {
-			-1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
-			 1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
-			 1.0f,  1.0f,  1.0f, 1.0f, 1.0f,
-			-1.0f,  1.0f,  1.0f, 0.0f, 1.0f,	// front face
+			-1.0f, -1.0f,  1.0f,
+			 1.0f, -1.0f,  1.0f,
+			 1.0f,  1.0f,  1.0f,
+			-1.0f,  1.0f,  1.0f,	// front face
 
-			-1.0f, -1.0f, -1.0f, 0.0f, 0.0f,
-			 1.0f, -1.0f, -1.0f, 1.0f, 0.0f,
-			 1.0f,  1.0f, -1.0f, 1.0f, 1.0f,
-			-1.0f,  1.0f, -1.0f, 0.0f, 1.0f,	// back face
-		};
-
-		unsigned int indices[] = {
-			0, 1, 2,	// One triangle
-			2, 3, 0,
-
-			1, 5, 6,	// One Face
-			6, 2, 1,	// One Face
-
-			5, 4, 7,
-			7, 6, 5,
-
-			4, 0, 3,
-			3, 7, 4,
-
-			0, 1, 5,
-			5, 4, 0,
-
-			3, 2, 6,
-			6, 7, 3
+			-1.0f, -1.0f, -1.0f,
+			 1.0f, -1.0f, -1.0f,
+			 1.0f,  1.0f, -1.0f,
+			-1.0f,  1.0f, -1.0f	// back face
 		};
 
 		float textureUV[] = {
-		0.000059f, 1.0f - 0.000004f,
-	0.000103f, 1.0f - 0.336048f,
-	0.335973f, 1.0f - 0.335903f,
-	1.000023f, 1.0f - 0.000013f,
-	0.667979f, 1.0f - 0.335851f,
-	0.999958f, 1.0f - 0.336064f,
-	0.667979f, 1.0f - 0.335851f,
-	0.336024f, 1.0f - 0.671877f,
-	0.667969f, 1.0f - 0.671889f,
-	1.000023f, 1.0f - 0.000013f,
-	0.668104f, 1.0f - 0.000013f,
-	0.667979f, 1.0f - 0.335851f,
-	0.000059f, 1.0f - 0.000004f,
-	0.335973f, 1.0f - 0.335903f,
-	0.336098f, 1.0f - 0.000071f,
-	0.667979f, 1.0f - 0.335851f,
-	0.335973f, 1.0f - 0.335903f,
-	0.336024f, 1.0f - 0.671877f,
-	1.000004f, 1.0f - 0.671847f,
-	0.999958f, 1.0f - 0.336064f,
-	0.667979f, 1.0f - 0.335851f,
-	0.668104f, 1.0f - 0.000013f,
-	0.335973f, 1.0f - 0.335903f,
-	0.667979f, 1.0f - 0.335851f,
-	0.335973f, 1.0f - 0.335903f,
-	0.668104f, 1.0f - 0.000013f,
-	0.336098f, 1.0f - 0.000071f,
-	0.000103f, 1.0f - 0.336048f,
-	0.000004f, 1.0f - 0.671870f,
-	0.336024f, 1.0f - 0.671877f,
-	0.000103f, 1.0f - 0.336048f,
-	0.336024f, 1.0f - 0.671877f,
-	0.335973f, 1.0f - 0.335903f,
-	0.667969f, 1.0f - 0.671889f,
-	1.000004f, 1.0f - 0.671847f,
-	0.667979f, 1.0f - 0.335851f
+			0.0f, 0.0f, 1.0f, 0.0f,
+			1.0f, 1.0f, 0.0f, 1.0f,
+			0.0f, 0.0f, 1.0f, 0.0f,
+			1.0f, 1.0f, 0.0f, 1.0f,
+			0.0f, 0.0f, 1.0f, 0.0f,
+			1.0f, 1.0f, 0.0f, 1.0f,
+			0.0f, 0.0f, 1.0f, 0.0f,
+			1.0f, 1.0f, 0.0f, 1.0f
 		};
-		
+
+		unsigned int indices[] = {
+			0, 1, 2, 3,
+			1, 5, 6, 2,
+			5, 4, 7, 6,
+			4, 0, 3, 7,
+			0, 1, 5, 4,
+			3, 2, 6, 7
+		};
 
 		GLCall(glEnable(GL_BLEND));
 		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-		m_VertexBuffer = std::make_unique<VertexBuffer>(vertices, 5 * 8 * sizeof(float));
+		m_VertexBuffer = std::make_unique<VertexBuffer>(vertices, textureUV, (8 * 3 * 4) * sizeof(float));
 
 		VertexBufferLayout layout;
-		layout.Push<float>(3);
-		layout.Push<float>(2);
+		layout.Push<float>(5);
+		//layout.Push<float>(2);
 
 		m_Texture = std::make_unique<Texture>("res/textures/spongebob.png");
-		m_Texture->BindTextureUV(textureUV, 34 * sizeof(float));
+		//m_Texture->BindTextureUV(textureUV, 4 * 8 * sizeof(float));
 
 		m_VertexArray = std::make_unique<VertexArray>();
 		m_VertexArray->AddBuffer(*m_VertexBuffer, layout);
 
-		m_IndexBuffer = std::make_unique<IndexBuffer>(indices, 2 * 3 * 6);
+		m_IndexBuffer = std::make_unique<IndexBuffer>(indices, 6 * 4);
 
 		m_Shader = std::make_unique<Shader>("res/shaders/Basic.shader");
 		m_Shader->Bind();
@@ -158,7 +118,7 @@ namespace example
 
 		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-		renderer.Draw(*m_VertexArray, *m_IndexBuffer, *m_Shader);
+		renderer.DrawQuad(*m_VertexArray, *m_IndexBuffer, *m_Shader);
 
 	}
 
