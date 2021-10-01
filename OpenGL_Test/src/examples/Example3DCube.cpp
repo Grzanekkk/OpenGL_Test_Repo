@@ -59,13 +59,15 @@ namespace example
 		GLCall(glEnable(GL_BLEND));
 		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-		m_VertexBuffer = std::make_unique<VertexBuffer>(vertices, textureUV, (32 + 24) * sizeof(float));
+		//m_VertexBuffer = std::make_unique<VertexBuffer>(vertices, textureUV, (32 + 24) * sizeof(float));
+		m_VertexBuffer = std::make_unique<VertexBuffer>(vertices, 3 * 8 * sizeof(float));
 
 		VertexBufferLayout layout;
 		layout.Push<float>(3);
-		layout.Push<float>(2);
+		//layout.Push<float>(2);
 
 		m_Texture = std::make_unique<Texture>("res/textures/spongebob.png");
+		m_Texture->Bind();
 		//m_Texture->BindTextureUV(textureUV, 4 * 8 * sizeof(float));
 
 		m_VertexArray = std::make_unique<VertexArray>();
